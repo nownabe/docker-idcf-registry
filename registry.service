@@ -1,0 +1,15 @@
+[Unit]
+Description=idcf-registry
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill registry
+ExecStartPre=-/usr/bin/docker rm registry
+ExecStartPre=/usr/bin/docker pull registry
+ExecStart=/usr/bin/docker run --name registry -e "REGISTRY_STORAGE_ACCESS_KEY=${REGISTRY_STORAGE_ACCESS_KEY}" -e "REGISTRY_STORAGE_SECRET_KEY=${REGISTRY_STORAGE_SECRET_KEY}" -p 5000:5000 registry
+
+[Install]
+WantedBy=multi-user.target
+
